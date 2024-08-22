@@ -22,3 +22,40 @@ This project provides a solution to the N-Queens problem using a recursive appro
 4. **Execution:**
    - Starts solving the problem by calling `placeQueen` for the first row.
    - Outputs the number of solutions found and prints each solution.
+## Code Implementation
+
+```python
+import time
+
+numQueens = 8  # Number of queens
+currentSolution = [0 for _ in range(numQueens)]  # Holds current testing data
+solutions = []  # List to store found solutions
+
+def isSafe(testRow, testCol):
+    if testRow == 0:
+        return True
+    for row in range(0, testRow):
+        if testCol == currentSolution[row]:
+            return False
+        if abs(testRow - row) == abs(testCol - currentSolution[row]):
+            return False
+    return True
+
+def placeQueen(row):
+    global currentSolution, solutions, numQueens
+    for col in range(numQueens):
+        if not isSafe(row, col):
+            continue
+        currentSolution[row] = col
+        if row == (numQueens - 1):
+            solutions.append(currentSolution.copy())
+            print("Solution number", len(solutions), currentSolution)
+        else:
+            placeQueen(row + 1)
+
+print("Solving for " + str(numQueens) + " Queens")
+time.sleep(2)
+placeQueen(0)
+print(len(solutions), "solutions found")
+for solution in solutions:
+    print(solution)
